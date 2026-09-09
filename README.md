@@ -25,6 +25,10 @@ Current versions of `ytmusicapi` require both an OAuth token file and the Google
 OAuth client credentials that created it. This follows the
 [official ytmusicapi OAuth documentation](https://ytmusicapi.readthedocs.io/en/stable/setup/oauth.html).
 
+For detailed Google Cloud Console instructions, token generation, security
+guidance, and troubleshooting, follow the dedicated
+[`AUTHENTICATION.md`](AUTHENTICATION.md) guide.
+
 1. In Google Cloud Console, create or select a project.
 2. Enable the **YouTube Data API v3**.
 3. Configure the OAuth consent screen. If the app is in testing mode, add your
