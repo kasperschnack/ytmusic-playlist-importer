@@ -44,14 +44,15 @@ gcloud auth login
 ```
 
 Choose a globally unique project ID. It must use lowercase letters, digits, or
-hyphens, start with a letter, and cannot be changed after creation. Replace the
-example below with your own value:
+hyphens, start with a letter, and cannot be changed after creation. The separate
+project display name can be at most 30 characters. Replace the project ID example
+below with your own value:
 
 ```bash
 export YTMUSIC_PROJECT_ID='ytmusic-importer-your-name-2026'
 
 gcloud projects create "$YTMUSIC_PROJECT_ID" \
-  --name="YouTube Music Playlist Importer"
+  --name="YTMusic Playlist Importer"
 
 gcloud config set project "$YTMUSIC_PROJECT_ID"
 gcloud projects describe "$YTMUSIC_PROJECT_ID"
