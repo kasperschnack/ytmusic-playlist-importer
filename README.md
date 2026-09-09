@@ -25,29 +25,19 @@ Current versions of `ytmusicapi` require both an OAuth token file and the Google
 OAuth client credentials that created it. This follows the
 [official ytmusicapi OAuth documentation](https://ytmusicapi.readthedocs.io/en/stable/setup/oauth.html).
 
-For detailed Google Cloud Console instructions, token generation, security
-guidance, and troubleshooting, follow the dedicated
-[`AUTHENTICATION.md`](AUTHENTICATION.md) guide.
+The dedicated [`AUTHENTICATION.md`](AUTHENTICATION.md) guide uses `gcloud` to
+create/select the project and enable the YouTube Data API. It reserves the Google
+Cloud Console for the consent screen and **TVs and Limited Input devices** OAuth
+client, which `gcloud` cannot configure.
 
-1. In Google Cloud Console, create or select a project.
-2. Enable the **YouTube Data API v3**.
-3. Configure the OAuth consent screen. If the app is in testing mode, add your
-   Google account as a test user.
-4. Create an **OAuth client ID** with application type
-   **TVs and Limited Input devices**.
-5. From this repository, create the token file. The command prompts for the
-   client ID and secret, then starts Google's device authorization flow:
+After completing that guide, generate the token and export the matching client
+credentials:
 
-   ```bash
-   ytmusicapi oauth --file oauth.json
-   ```
-
-6. Export the same client ID and secret before running the importer:
-
-   ```bash
-   export YTMUSIC_CLIENT_ID='your-client-id'
-   export YTMUSIC_CLIENT_SECRET='your-client-secret'
-   ```
+```bash
+ytmusicapi oauth --file oauth.json
+export YTMUSIC_CLIENT_ID='your-client-id'
+export YTMUSIC_CLIENT_SECRET='your-client-secret'
+```
 
 The importer expects `oauth.json` in the current directory by default. Use
 `--oauth /secure/path/oauth.json` or set `YTMUSIC_OAUTH_FILE` to use another

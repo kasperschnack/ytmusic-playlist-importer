@@ -34,42 +34,70 @@ ytmusicapi oauth --help
 
 ## 2. Create a Google Cloud project
 
-1. Open the [Google Cloud Console](https://console.cloud.google.com/).
-2. Use the project selector at the top of the page.
-3. Select **New project**.
-4. Give the project a recognizable name, such as
-   `YouTube Music Playlist Importer`.
-5. Select **Create**, then make sure the new project is selected.
+Install the
+[Google Cloud CLI](https://cloud.google.com/sdk/docs/install) if `gcloud` is not
+already available, then sign in:
+
+```bash
+gcloud --version
+gcloud auth login
+```
+
+Choose a globally unique project ID. It must use lowercase letters, digits, or
+hyphens, start with a letter, and cannot be changed after creation. Replace the
+example below with your own value:
+
+```bash
+export YTMUSIC_PROJECT_ID='ytmusic-importer-your-name-2026'
+
+gcloud projects create "$YTMUSIC_PROJECT_ID" \
+  --name="YouTube Music Playlist Importer"
+
+gcloud config set project "$YTMUSIC_PROJECT_ID"
+gcloud projects describe "$YTMUSIC_PROJECT_ID"
+```
+
+If you want to use an existing project instead, skip `gcloud projects create`,
+set `YTMUSIC_PROJECT_ID` to that project's ID, and run the final two commands.
 
 Using a separate project for this personal tool makes its credentials and access
 easy to identify and revoke later.
 
 ## 3. Enable the YouTube Data API
 
-1. Open the
-   [YouTube Data API v3 library page](https://console.cloud.google.com/apis/library/youtube.googleapis.com)
-   while the new project is selected.
-2. Select **Enable**.
-3. Wait until the API's overview page appears.
+Enable the API and verify that it appears in the project's enabled-service list:
+
+```bash
+gcloud services enable youtube.googleapis.com \
+  --project="$YTMUSIC_PROJECT_ID"
+
+gcloud services list --enabled \
+  --filter='name:youtube.googleapis.com' \
+  --project="$YTMUSIC_PROJECT_ID"
+```
+
+The second command should print an entry for `youtube.googleapis.com`.
 
 If Google reports `BadOAuthClient` or `invalid_client` later, first confirm that
 this API is enabled in the same project as the OAuth client.
 
 ## 4. Configure the OAuth consent screen
 
-Google may label this part of the console **Google Auth Platform**. The exact
-navigation wording can change, but the configuration needs the following:
+The remaining consent-screen and consumer OAuth-client configuration is not
+supported by `gcloud`. Open the
+[Google Auth Platform](https://console.cloud.google.com/auth/overview), verify
+that `$YTMUSIC_PROJECT_ID` is selected in the project picker, and complete these
+steps. The exact navigation wording can change:
 
-1. Open **Google Auth Platform** for the selected project.
-2. Under **Branding**, enter an app name, support email, and developer contact
+1. Under **Branding**, enter an app name, support email, and developer contact
    email, then save.
-3. Under **Audience**, select:
+2. Under **Audience**, select:
    - **External** for a normal personal Google account; or
    - **Internal** only when the tool will be used inside your Google Workspace
      organization and that option is available.
-4. If the publishing status is **Testing**, add the Google account whose YouTube
+3. If the publishing status is **Testing**, add the Google account whose YouTube
    Music library will receive the playlist under **Test users**.
-5. Under **Data Access**, add the YouTube scope
+4. Under **Data Access**, add the YouTube scope
    `https://www.googleapis.com/auth/youtube` if the console asks you to configure
    scopes. This is the scope used to manage the account's YouTube data.
 
@@ -225,5 +253,7 @@ do not recognize.
 
 - [`ytmusicapi` OAuth setup](https://ytmusicapi.readthedocs.io/en/stable/setup/oauth.html)
 - [`ytmusicapi` authenticated usage](https://ytmusicapi.readthedocs.io/en/stable/usage.html)
+- [`gcloud projects create`](https://cloud.google.com/sdk/gcloud/reference/projects/create)
+- [`gcloud services enable`](https://cloud.google.com/sdk/gcloud/reference/services/enable)
 - [Google OAuth for TV and limited-input devices](https://developers.google.com/youtube/v3/guides/auth/devices)
 - [Google OAuth app audience and test users](https://support.google.com/cloud/answer/15549945)
